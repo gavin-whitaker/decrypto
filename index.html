@@ -43,6 +43,9 @@
             <button type="button" class="btn-lg btn-primary align-baseline float-right my-3" data-toggle="modal" data-target="#newGameModal">
               New Game
             </button>
+            <button type="button" class="btn-lg btn-secondary align-baseline float-right my-3 mr-2" data-toggle="modal" data-target="#setWordsModal" onclick="prefillCustomWords()">
+              Set Words
+            </button>
           </div>
         </div>
       </div>
@@ -117,6 +120,7 @@
               <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                 <a class="dropdown-item" href="#" data-toggle="modal" data-target="#codeModal" id="revealCodeButton" style:"display:none">Reveal code</a>
                 <a class="dropdown-item" href="#" onclick="generateCode()">Generate new code</a>
+                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#customCodeModal">Enter your own code</a>
               </div>
             </div>
           </div>
@@ -254,6 +258,61 @@
     </div>
   </div>
 </div>
+<!-- Modal -->
+<div class="modal fade" id="setWordsModal" tabindex="-1" role="dialog" aria-labelledby="setWordsModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="setWordsModalLabel">Set Your Own Words</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="form-row">
+          <div class="col-6 mb-2">
+            <input type="text" class="form-control" id="customWord0" placeholder="Word 1">
+          </div>
+          <div class="col-6 mb-2">
+            <input type="text" class="form-control" id="customWord1" placeholder="Word 2">
+          </div>
+          <div class="col-6 mb-2">
+            <input type="text" class="form-control" id="customWord2" placeholder="Word 3">
+          </div>
+          <div class="col-6 mb-2">
+            <input type="text" class="form-control" id="customWord3" placeholder="Word 4">
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+        <button type="button" class="btn btn-primary" onclick="saveCustomWords()">Save Words</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="customCodeModal" tabindex="-1" role="dialog" aria-labelledby="customCodeModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="customCodeModalLabel">Enter Your Own Code</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <input type="text" class="form-control" id="customCodeInput" placeholder="3 digits, each 1-4 (e.g. 312)" maxlength="3">
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+        <button type="button" class="btn btn-primary" onclick="saveCustomCode()">Save Code</button>
+      </div>
+    </div>
+  </div>
+</div>
+
     <script>
       $(document).ready(function() {
         initialize();
