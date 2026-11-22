@@ -55,7 +55,7 @@ function newGame() {
 	var words = pickWords(4);
 	Cookies.set("words", words);
 	Cookies.remove("code");
-	Cookies.remove("hintState");
+	clearHintState();
 	activeTeam = "Our team";
 	renderHints();
 	$('#revealCodeButton').hide();
@@ -138,11 +138,28 @@ function defaultHintState() {
 }
 
 function loadHintState() {
-	return Cookies.getJSON("hintState") || defaultHintState();
+	var state = null;
+	try { state = JSON.parse(localStorage.getItem("hintState")); } catch (e) {}
+	if (!state) { state = Cookies.getJSON("hintState"); }
+	state = state || defaultHintState();
+	state.notes = state.notes || {};
+	state.guesses = state.guesses || {};
+	state.teams.forEach(function(t) {
+		state.hints[t] = (state.hints[t] || []).map(function(r) {
+			return Array.isArray(r) ? { hints: r, code: "" } : r;
+		});
+	});
+	return state;
 }
 
 function saveHintState(state) {
-	Cookies.set("hintState", state);
+	localStorage.setItem("hintState", JSON.stringify(state));
+	Cookies.remove("hintState");
+}
+
+function clearHintState() {
+	localStorage.removeItem("hintState");
+	Cookies.remove("hintState");
 }
 
 var activeTeam = "Our team";
@@ -185,18 +202,36 @@ function addTeam() {
 	renderHints();
 }
 
+function codeDigits(code) {
+	return (code || "").replace(/[^1-4]/g, "").slice(0, 3);
+}
+
 function renderHints() {
 	var state = loadHintState();
 	if (state.teams.indexOf(activeTeam) === -1) {
 		activeTeam = state.teams[0];
 	}
 	renderTeamTabs();
+	renderBoard(state);
 	var list = $("#hintList");
 	list.empty();
 	var rounds = state.hints[activeTeam] || [];
-	for (idx = 0; idx < rounds.length; idx++) {
-		list.append($("<li>").text("Round " + (idx + 1) + ": " + rounds[idx].join(" / ")));
-	}
+	rounds.forEach(function(r, idx) {
+		var li = $("<li>");
+		li.append($("<span class='round-n'>").text("Round " + (idx + 1)));
+		if (r.code) {
+			li.append($("<span class='round-code'>").text(r.code.split("").join("-")));
+		} else {
+			var inp = $("<input type='text' class='form-control form-control-sm round-code-input' inputmode='numeric' maxlength='3' placeholder='code?'>");
+			inp.on("change", function() {
+				var d = codeDigits($(this).val());
+				if (d.length === 3) { setRoundCode(idx, d); }
+			});
+			li.append(inp);
+		}
+		li.append($("<span class='round-hints'>").text(r.hints.join(" / ")));
+		list.append(li);
+	});
 	if (activeTeam === "Our team") {
 		$("#teamNotesWrap").hide();
 	} else {
@@ -206,20 +241,72 @@ function renderHints() {
 	}
 }
 
+function renderBoard(state) {
+	var board = $("#numberBoard");
+	board.empty();
+	$("#teamBoardLabel").text(activeTeam === "Our team" ? "Our hints by number" : activeTeam + ": your guess for each number");
+	var guesses = (state.guesses[activeTeam] || ["", "", "", ""]);
+	var rounds = state.hints[activeTeam] || [];
+	for (var n = 1; n <= 4; n++) {
+		var bank = [];
+		rounds.forEach(function(r) {
+			var d = (r.code || "").split("");
+			for (var i = 0; i < 3; i++) {
+				if (d[i] === String(n) && r.hints[i]) { bank.push(r.hints[i]); }
+			}
+		});
+		var card = $("<div class='num-card'>");
+		card.append($("<div class='num-badge'>").text(n));
+		var g = $("<input type='text' class='form-control form-control-sm guess-input' placeholder='Guess for " + n + "'>").val(guesses[n - 1] || "");
+		(function(num) {
+			g.on("input", function() { saveGuess(num, $(this).val()); });
+		})(n);
+		card.append(g);
+		var chips = $("<div class='bank'>");
+		if (bank.length === 0) {
+			chips.append($("<span class='bank-empty'>").text("no hints yet"));
+		}
+		bank.forEach(function(w) { chips.append($("<span class='chip'>").text(w)); });
+		card.append(chips);
+		board.append($("<div class='col-6 col-md-3 mb-2'>").append(card));
+	}
+}
+
+function saveGuess(num, val) {
+	var state = loadHintState();
+	var g = state.guesses[activeTeam] || ["", "", "", ""];
+	g[num - 1] = val;
+	state.guesses[activeTeam] = g;
+	saveHintState(state);
+}
+
+function setRoundCode(idx, code) {
+	var state = loadHintState();
+	state.hints[activeTeam][idx].code = code;
+	saveHintState(state);
+	renderHints();
+}
+
 function addHints() {
 	var round = [$("#hint1").val(), $("#hint2").val(), $("#hint3").val()];
 	round = round.map(function(s) { return s.trim(); });
 	if (!round.some(function(s) { return s.length > 0; })) {
 		return;
 	}
+	var code = codeDigits($("#hintCode").val());
+	if (code.length !== 3) { code = ""; }
+	if (!code && activeTeam === "Our team") {
+		var c = Cookies.getJSON("code");
+		if (c) { code = c.join(""); }
+	}
 	var state = loadHintState();
 	if (!state.hints[activeTeam]) {
 		state.hints[activeTeam] = [];
 	}
-	state.hints[activeTeam].push(round);
+	state.hints[activeTeam].push({ hints: round, code: code });
 	saveHintState(state);
 	renderHints();
-	$("#hint1, #hint2, #hint3").val("");
+	$("#hint1, #hint2, #hint3, #hintCode").val("");
 	$("#hint1").focus();
 }
 
