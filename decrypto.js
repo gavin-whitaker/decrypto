@@ -55,6 +55,8 @@ function newGame() {
 	var words = pickWords(4);
 	Cookies.set("words", words);
 	Cookies.remove("code");
+	Cookies.remove("hints");
+	renderHints();
 	$('#revealCodeButton').hide();
 	return words;
 }
@@ -107,6 +109,7 @@ function initScreenfull() {
 
 function initialize() {
 	initScreenfull();
+	renderHints();
 
 	wordList = loadWordList();
 	loadCode();
@@ -127,4 +130,100 @@ function initialize() {
 		*/
 		$('#newGameModal').modal('show');
 	}
+}
+
+function defaultHintState() {
+	return { teams: ["Our team", "Team 2"], hints: { "Our team": [], "Team 2": [] }, notes: {} };
+}
+
+function loadHintState() {
+	return Cookies.getJSON("hintState") || defaultHintState();
+}
+
+function saveHintState(state) {
+	Cookies.set("hintState", state);
+}
+
+var activeTeam = "Our team";
+
+function renderTeamTabs() {
+	var state = loadHintState();
+	var tabs = $("#teamTabs");
+	tabs.empty();
+	state.teams.forEach(function(team) {
+		var li = $("<li class='nav-item'>");
+		var a = $("<a class='nav-link' href='#'>").text(team);
+		if (team === activeTeam) {
+			a.addClass("active");
+		}
+		a.click(function(e) {
+			e.preventDefault();
+			activeTeam = team;
+			renderHints();
+		});
+		li.append(a);
+		tabs.append(li);
+	});
+	var addLi = $("<li class='nav-item'>");
+	var addA = $("<a class='nav-link' href='#'>").text("+ Add team");
+	addA.click(function(e) {
+		e.preventDefault();
+		addTeam();
+	});
+	addLi.append(addA);
+	tabs.append(addLi);
+}
+
+function addTeam() {
+	var state = loadHintState();
+	var name = "Team " + (state.teams.length + 1);
+	state.teams.push(name);
+	state.hints[name] = [];
+	saveHintState(state);
+	activeTeam = name;
+	renderHints();
+}
+
+function renderHints() {
+	var state = loadHintState();
+	if (state.teams.indexOf(activeTeam) === -1) {
+		activeTeam = state.teams[0];
+	}
+	renderTeamTabs();
+	var list = $("#hintList");
+	list.empty();
+	var rounds = state.hints[activeTeam] || [];
+	for (idx = 0; idx < rounds.length; idx++) {
+		list.append($("<li>").text("Round " + (idx + 1) + ": " + rounds[idx].join(" / ")));
+	}
+	if (activeTeam === "Our team") {
+		$("#teamNotesWrap").hide();
+	} else {
+		$("#teamNotesWrap").show();
+		$("#teamNotesLabel").text("Your guesses for " + activeTeam);
+		$("#teamNotes").val(state.notes[activeTeam] || "");
+	}
+}
+
+function addHints() {
+	var round = [$("#hint1").val(), $("#hint2").val(), $("#hint3").val()];
+	round = round.map(function(s) { return s.trim(); });
+	if (!round.some(function(s) { return s.length > 0; })) {
+		return;
+	}
+	var state = loadHintState();
+	if (!state.hints[activeTeam]) {
+		state.hints[activeTeam] = [];
+	}
+	state.hints[activeTeam].push(round);
+	saveHintState(state);
+	renderHints();
+	$("#hint1, #hint2, #hint3").val("");
+	$("#hint1").focus();
+}
+
+function saveTeamNotes() {
+	var state = loadHintState();
+	state.notes[activeTeam] = $("#teamNotes").val();
+	saveHintState(state);
 }
