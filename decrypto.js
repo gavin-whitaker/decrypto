@@ -228,3 +228,36 @@ function saveTeamNotes() {
 	state.notes[activeTeam] = $("#teamNotes").val();
 	saveHintState(state);
 }
+
+function prefillCustomWords() {
+	var words = loadWords() || ["", "", "", ""];
+	for (idx = 0; idx < 4; idx++) {
+		$("#customWord" + idx).val(words[idx]);
+	}
+}
+
+function saveCustomWords() {
+	var words = [];
+	for (idx = 0; idx < 4; idx++) {
+		words.push($("#customWord" + idx).val().trim().toUpperCase());
+	}
+	if (words.some(function(w) { return w.length === 0; })) {
+		return;
+	}
+	Cookies.set("words", words);
+	setWords(words);
+	$("#setWordsModal").modal("hide");
+}
+
+function saveCustomCode() {
+	var digits = $("#customCodeInput").val().replace(/[^1-4]/g, "");
+	if (digits.length !== 3) {
+		$("#customCodeInput").addClass("is-invalid");
+		return;
+	}
+	$("#customCodeInput").removeClass("is-invalid");
+	var code = digits.split("").map(function(d) { return parseInt(d, 10); });
+	Cookies.set("code", code);
+	setCode(code);
+	$("#customCodeModal").modal("hide");
+}
