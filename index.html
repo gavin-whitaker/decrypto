@@ -133,6 +133,41 @@
         </div>
       </div>
 
+      <div class="container-fluid my-3">
+        <div class="row">
+          <div class="col-12">
+            <div class="card">
+              <div class="card-header bg-primary">
+                <div class="cluenumber">
+                  Hint History
+                </div>
+              </div>
+              <div class="card-body bg-light">
+                <ul class="nav nav-tabs mb-3" id="teamTabs"></ul>
+                <div class="form-row">
+                  <div class="col-md-3 col-12 mb-2">
+                    <input type="text" class="form-control" id="hint1" placeholder="Hint 1">
+                  </div>
+                  <div class="col-md-3 col-12 mb-2">
+                    <input type="text" class="form-control" id="hint2" placeholder="Hint 2">
+                  </div>
+                  <div class="col-md-3 col-12 mb-2">
+                    <input type="text" class="form-control" id="hint3" placeholder="Hint 3">
+                  </div>
+                  <div class="col-md-3 col-12 mb-2">
+                    <button type="button" class="btn btn-primary btn-block" onclick="addHints()">Add</button>
+                  </div>
+                </div>
+                <ul class="hintlist" id="hintList"></ul>
+                <div id="teamNotesWrap" style="display:none">
+                  <h5 id="teamNotesLabel"></h5>
+                  <textarea class="form-control" id="teamNotes" rows="3" placeholder="e.g. their hints for round 1 sound like word 3..." oninput="saveTeamNotes()"></textarea>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
 <!-- Modal -->
 <div class="modal fade" id="newGameModal" tabindex="-1" role="dialog" aria-labelledby="newGameModalLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
