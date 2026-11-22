@@ -244,8 +244,7 @@ function renderHints() {
 function renderBoard(state) {
 	var board = $("#numberBoard");
 	board.empty();
-	$("#teamBoardLabel").text(activeTeam === "Our team" ? "Our hints by number" : activeTeam + ": your guess for each number");
-	var guesses = (state.guesses[activeTeam] || ["", "", "", ""]);
+	$("#teamBoardLabel").text(activeTeam === "Our team" ? "Our hints by number" : activeTeam + ": hints by number");
 	var rounds = state.hints[activeTeam] || [];
 	for (var n = 1; n <= 4; n++) {
 		var bank = [];
@@ -257,11 +256,6 @@ function renderBoard(state) {
 		});
 		var card = $("<div class='num-card'>");
 		card.append($("<div class='num-badge'>").text(n));
-		var g = $("<input type='text' class='form-control form-control-sm guess-input' placeholder='Guess for " + n + "'>").val(guesses[n - 1] || "");
-		(function(num) {
-			g.on("input", function() { saveGuess(num, $(this).val()); });
-		})(n);
-		card.append(g);
 		var chips = $("<div class='bank'>");
 		if (bank.length === 0) {
 			chips.append($("<span class='bank-empty'>").text("no hints yet"));
@@ -270,14 +264,6 @@ function renderBoard(state) {
 		card.append(chips);
 		board.append($("<div class='col-6 col-md-3 mb-2'>").append(card));
 	}
-}
-
-function saveGuess(num, val) {
-	var state = loadHintState();
-	var g = state.guesses[activeTeam] || ["", "", "", ""];
-	g[num - 1] = val;
-	state.guesses[activeTeam] = g;
-	saveHintState(state);
 }
 
 function setRoundCode(idx, code) {
