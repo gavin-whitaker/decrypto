@@ -55,7 +55,8 @@ function newGame() {
 	var words = pickWords(4);
 	Cookies.set("words", words);
 	Cookies.remove("code");
-	Cookies.remove("hints");
+	Cookies.remove("hintState");
+	activeTeam = "Our team";
 	renderHints();
 	$('#revealCodeButton').hide();
 	return words;
