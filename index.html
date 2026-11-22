@@ -10,7 +10,7 @@
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 
-    <link rel="stylesheet" href="decrypto.css?v=3">
+    <link rel="stylesheet" href="decrypto.css?v=4">
 
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
 
@@ -28,32 +28,32 @@
 
     <script src="https://cdn.jsdelivr.net/npm/screenfull@4.0.0/dist/screenfull.min.js"></script>
 
-    <script src="decrypto.js?v=3"></script>
+    <script src="decrypto.js?v=4"></script>
 
     <title>Decrypto</title>
   </head>
   <body class="bg-dark">
-    <div class="container-fluid my-5">
+    <div class="container-fluid my-3">
       <div class="container-fluid">
         <div class="row">
-          <div class="col-8 bg-info">
-            <p><h3>Decrypto</h3></p>
+          <div class="col-5 app-title">
+            <h3>Decrypto</h3>
           </div>
-          <div class="col-4">
-            <button type="button" class="btn-lg btn-primary align-baseline float-right my-3" data-toggle="modal" data-target="#newGameModal">
+          <div class="col-7">
+            <button type="button" class="btn btn-primary align-baseline float-right my-3" data-toggle="modal" data-target="#newGameModal">
               New Game
             </button>
-            <button type="button" class="btn-lg btn-secondary align-baseline float-right my-3 mr-2" data-toggle="modal" data-target="#setWordsModal" onclick="prefillCustomWords()">
+            <button type="button" class="btn btn-secondary align-baseline float-right my-3 mr-2" data-toggle="modal" data-target="#setWordsModal" onclick="prefillCustomWords()">
               Set Words
             </button>
           </div>
         </div>
       </div>
-      <div class="container-fluid my-5">
+      <div class="container-fluid my-3">
         <div class="row">
-          <div class="col-sm-3">
+          <div class="col-6 col-md-3">
             <div class="card">
-              <div class="card-header bg-primary">
+              <div class="card-header">
                 <div class="cluenumber">
                   1
                 </div>
@@ -65,9 +65,9 @@
               </div>
             </div>
           </div>
-          <div class="col-sm-3">
+          <div class="col-6 col-md-3">
             <div class="card">
-              <div class="card-header bg-primary">
+              <div class="card-header">
                 <div class="cluenumber">
                   2
                 </div>
@@ -79,9 +79,9 @@
               </div>
             </div>
           </div>
-          <div class="col-sm-3">
+          <div class="col-6 col-md-3">
             <div class="card">
-              <div class="card-header bg-primary">
+              <div class="card-header">
                 <div class="cluenumber">
                   3
                 </div>
@@ -93,9 +93,9 @@
               </div>
             </div>
           </div>
-          <div class="col-sm-3">
+          <div class="col-6 col-md-3">
             <div class="card">
-              <div class="card-header bg-primary">
+              <div class="card-header">
                 <div class="cluenumber">
                   4
                 </div>
@@ -114,7 +114,7 @@
           <div class="col-6">
             <div class="float-left">
             <div class="dropdown">              
-              <button class="btn btn-primary btn-lg dropdown-toggle my-3" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              <button class="btn btn-primary dropdown-toggle my-3" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 Code
               </button>
               <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
@@ -127,7 +127,7 @@
         </div>
           <div class="col-6">
             <div class="float-right">
-              <button class="btn btn-primary btn-lg my-3" type="button" id="fullScreenButton" onclick="toggleFullScreen()">
+              <button class="btn btn-primary my-3" type="button" id="fullScreenButton" onclick="toggleFullScreen()">
                 <i class="fas fa-expand-arrows-alt" id="enableFullScreen"></i>
                 <i class="fas fa-compress" style="display:none" id="disableFullScreen"></i>
               </button>
@@ -141,26 +141,24 @@
         <div class="row">
           <div class="col-12">
             <div class="card">
-              <div class="card-header bg-primary">
+              <div class="card-header">
                 <div class="cluenumber">
                   Hint History
                 </div>
               </div>
-              <div class="card-body bg-light">
-                <ul class="nav nav-tabs mb-3" id="teamTabs"></ul>
+              <div class="card-body">
+                <ul class="nav nav-pills mb-3" id="teamTabs"></ul>
+                <div id="teamBoardWrap">
+                  <h6 class="section-label" id="teamBoardLabel"></h6>
+                  <div class="row no-gutters-sm" id="numberBoard"></div>
+                </div>
+                <h6 class="section-label mt-3">Log a round</h6>
                 <div class="form-row">
-                  <div class="col-md-3 col-12 mb-2">
-                    <input type="text" class="form-control" id="hint1" placeholder="Hint 1">
-                  </div>
-                  <div class="col-md-3 col-12 mb-2">
-                    <input type="text" class="form-control" id="hint2" placeholder="Hint 2">
-                  </div>
-                  <div class="col-md-3 col-12 mb-2">
-                    <input type="text" class="form-control" id="hint3" placeholder="Hint 3">
-                  </div>
-                  <div class="col-md-3 col-12 mb-2">
-                    <button type="button" class="btn btn-primary btn-block" onclick="addHints()">Add</button>
-                  </div>
+                  <div class="col-4 mb-2"><input type="text" class="form-control" id="hint1" placeholder="Hint 1"></div>
+                  <div class="col-4 mb-2"><input type="text" class="form-control" id="hint2" placeholder="Hint 2"></div>
+                  <div class="col-4 mb-2"><input type="text" class="form-control" id="hint3" placeholder="Hint 3"></div>
+                  <div class="col-6 col-md-8 mb-2"><input type="text" class="form-control" id="hintCode" inputmode="numeric" maxlength="3" placeholder="Code, e.g. 312 (optional)"></div>
+                  <div class="col-6 col-md-4 mb-2"><button type="button" class="btn btn-primary btn-block" onclick="addHints()">Add</button></div>
                 </div>
                 <ul class="hintlist" id="hintList"></ul>
                 <div id="teamNotesWrap" style="display:none">
@@ -228,7 +226,7 @@
             <div class="col-4">
               <div class="card">
                 <div class="body">
-                  <div class="codebody bg-info" id="code0">
+                  <div class="codebody" id="code0">
                   </div>
                 </div>                
               </div>
@@ -236,7 +234,7 @@
             <div class="col-4">
               <div class="card">
                 <div class="body">
-                  <div class="codebody bg-info" id="code1">
+                  <div class="codebody" id="code1">
                   </div>
                 </div>
               </div>
@@ -244,7 +242,7 @@
             <div class="col-4">
               <div class="card">
                 <div class="body">
-                  <div class="codebody bg-info" id="code2">
+                  <div class="codebody" id="code2">
                   </div>
                 </div>
               </div>
