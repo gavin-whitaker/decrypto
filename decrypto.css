@@ -1,38 +1,40 @@
-html {
-	font-size: 12px;
+html { font-size: 14px; }
+body.bg-dark, body {
+	background: #0f172a !important;
+	color: #e2e8f0;
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
 }
-
-.button {
-	vertical-align:center;
-}
-
-.cluenumber {
-	text-align: center;
-	font-weight: bold;
-}
-
-.cluebody {
-	text-align: center;
-	font-weight: bold;
-	font-size: 1.5em;
-}
-
-.modal-backdrop {
-	/* make background black for modals
-	   (ideally would make it just for code reveals) */
-
-	opacity: 1.0 !important;
-}
-
-.codebody {
-	text-align: center;
-	font-weight: bold;
-	font-size: 3em;
-}
-.hintlist {
-	font-size: 1.3em;
-}
-
-.hintlist li {
-	margin-bottom: 0.3em;
-}
+.app-title h3 { margin: 1rem 0 0; font-weight: 700; letter-spacing: .02em; color: #f8fafc; line-height: 2.6rem; }
+.btn { border-radius: 10px; font-weight: 600; padding: .55rem 1rem; border: 0; }
+.btn-primary { background: #6366f1; }
+.btn-primary:hover, .btn-primary:focus { background: #4f46e5; }
+.btn-secondary { background: #334155; }
+.btn-secondary:hover { background: #475569; }
+.card { border: 0; border-radius: 14px; background: #1e293b; color: #e2e8f0; overflow: hidden; margin-bottom: .75rem; }
+.card-header { background: transparent; border-bottom: 1px solid #334155; padding: .5rem; }
+.cluenumber { text-align: center; font-weight: 700; color: #94a3b8; letter-spacing: .05em; text-transform: uppercase; font-size: .85rem; }
+.cluebody { text-align: center; font-weight: 700; font-size: 1.3em; padding: .9rem .25rem; color: #f8fafc; word-break: break-word; }
+.modal-backdrop { opacity: 1.0 !important; }
+.modal-content { border-radius: 16px; border: 0; }
+.codebody { text-align: center; font-weight: 700; font-size: 3em; background: #e0e7ff; color: #3730a3; border-radius: 10px; }
+.form-control { border-radius: 10px; border: 1px solid #334155; background: #0f172a; color: #f8fafc; }
+.form-control:focus { background: #0f172a; color: #f8fafc; border-color: #6366f1; box-shadow: 0 0 0 .15rem rgba(99,102,241,.3); }
+.form-control::placeholder { color: #64748b; }
+.modal .form-control { background: #fff; color: #212529; border-color: #ced4da; }
+.nav-pills { flex-wrap: nowrap; overflow-x: auto; -webkit-overflow-scrolling: touch; padding-bottom: 4px; }
+.nav-pills .nav-link { color: #94a3b8; border-radius: 999px; white-space: nowrap; padding: .4rem .9rem; background: #0f172a; margin-right: .4rem; }
+.nav-pills .nav-link.active { background: #6366f1; color: #fff; }
+.section-label { text-transform: uppercase; letter-spacing: .06em; font-size: .75rem; color: #94a3b8; margin-bottom: .5rem; }
+.num-card { background: #0f172a; border-radius: 12px; padding: .6rem; height: 100%; }
+.num-badge { display: inline-block; width: 1.6rem; height: 1.6rem; line-height: 1.6rem; text-align: center; border-radius: 50%; background: #6366f1; color: #fff; font-weight: 700; margin-bottom: .4rem; }
+.guess-input { margin-bottom: .5rem; }
+.bank { display: flex; flex-wrap: wrap; gap: .3rem; }
+.chip { background: #312e81; color: #e0e7ff; border-radius: 999px; padding: .15rem .6rem; font-size: .9rem; }
+.bank-empty { color: #64748b; font-size: .85rem; }
+.hintlist { list-style: none; padding: 0; margin: .75rem 0; }
+.hintlist li { display: flex; flex-wrap: wrap; align-items: center; gap: .5rem; padding: .5rem 0; border-bottom: 1px solid #334155; }
+.round-n { color: #94a3b8; font-size: .85rem; min-width: 4.5rem; }
+.round-code { background: #6366f1; color: #fff; border-radius: 8px; padding: 0 .5rem; font-weight: 700; }
+.round-code-input { width: 5rem; }
+.round-hints { font-weight: 600; color: #f8fafc; }
+#teamNotesLabel { color: #94a3b8; font-size: .85rem; }
